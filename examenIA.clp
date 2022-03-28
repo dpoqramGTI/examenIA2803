@@ -37,13 +37,12 @@
 ?fP <- (pedido naranjas ?x $?misc)
 ?fL <- (linea naranjas ?xLinea $?miscLinea)
 (maxCajasEncima ?cajasMax)
-(test (> ?x ?xLinea));; no hay mas de
-(test (> 1 ?x));; hay mas de 1 caja apuntada en el pedido
-(test (+ ?x ?cajasMax))
-
+(test (> (- ?x ?xLinea) 1));; saco la diferencia, pedido-linea es mayor que 1
+(test (> (- ?x ?xLinea) 2));; saco la diferencia, pedido-linea es mayor que 2
+(test (>= (+ ?xLinea ?cajasMax) ?x));; compruebo que si le sumo el maximo de cajas no supera el pedido
 =>
 (retract ?fL)
-(assert (linea naranjas (+ ?xLinea 1) $?miscLinea))
+(assert (linea naranjas (+ ?xLinea ?cajasMax) $?miscLinea))
 )
 
 (defrule cogerCajasDeNaranjas
