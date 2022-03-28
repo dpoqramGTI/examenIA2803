@@ -32,16 +32,27 @@
 (printout t "Pedido finalizado con exito" crlf)
 (halt))
 
+(defrule cogerCajasDeNaranjasMultiples
+( declare (salience 10))
+?fP <- (pedido naranjas ?x $?misc)
+?fL <- (linea naranjas ?xLinea $?miscLinea)
+(maxCajasEncima ?cajasMax)
+(test (> ?x ?xLinea));; no hay mas de
+(test (> 1 ?x));; hay mas de 1 caja apuntada en el pedido
+(test (+ ?x ?cajasMax))
+
+=>
+(retract ?fL)
+(assert (linea naranjas (+ ?xLinea 1) $?miscLinea))
+)
 
 (defrule cogerCajasDeNaranjas
 ?fP <- (pedido naranjas ?x $?misc)
 ?fL <- (linea naranjas ?xLinea $?miscLinea)
-(maxCajasEncima ?cajasMax)
 (test (> ?x ?xLinea))
 =>
 (retract ?fL)
 (assert (linea naranjas (+ ?xLinea 1) $?miscLinea))
-(test (< (+ 2 ?xLinea) 90)
 )
 
 (defrule cogerCajasDeManzanas
